@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] BottlePrefabs;
 
-    
+    public Score scoreCalculator;
 
     public void SetPlayerController(PlayerController InPlayerController)
     {
@@ -109,7 +109,17 @@ public class GameManager : MonoBehaviour
         int PrefabIndex = Random.Range(0, BottlePrefabs.Length);
         GameObject RandomPrefab = BottlePrefabs[PrefabIndex];
 
-        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
+        //GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
+
+        Vector3 randomPosition = new Vector3
+            (
+            Random.Range(-5f, -3f),
+            0f,
+            Random.Range(-0.5f, 0.5f) // z 값
+            );
+
+        // 병을 생성
+        GameObject BottlePrefab = Instantiate(RandomPrefab, randomPosition, Quaternion.identity);
 
         Bottle bottleComponent = BottlePrefab.GetComponent<Bottle>();
         if (bottleComponent)
@@ -122,6 +132,11 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
+        Debug.Log("게임 끝남");
+              
+        scoreCalculator.CalculateScores();
         // UI 표시
+        Debug.Log("bluePlayerScore : "+ blueplayerscore);
+        Debug.Log("redPlayerScore : "+ redplayerscore);
     }
 }
