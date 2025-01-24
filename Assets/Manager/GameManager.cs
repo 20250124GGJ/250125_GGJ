@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
         private set;
     }
 
+    private int TotalBottle = 0;
     //Player Controller
     private PlayerController playerController;
         
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
     public int GetBluePlayerScore   => blueplayerscore;
 
     public GameObject[] BottlePrefabs;
+
+    
 
     public void SetPlayerController(PlayerController InPlayerController)
     {
@@ -91,9 +94,15 @@ public class GameManager : MonoBehaviour
 
     private void CreateBottle()
     {
-        if(BottlePrefabs.Length==0)
+        if (BottlePrefabs.Length == 0)
         {
             Debug.Log("Object Arr Length is 0");
+            return;
+        }
+
+        if (20 == TotalBottle)
+        {
+            EndGame();
             return;
         }
 
@@ -102,6 +111,17 @@ public class GameManager : MonoBehaviour
 
         GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
 
+        Bottle bottleComponent = BottlePrefab.GetComponent<Bottle>();
+        if (bottleComponent)
+        {
+            bottleComponent.team = currentturn;
+        }
         playerController.SetBottle(BottlePrefab);
+        TotalBottle++;
+    }
+
+    private void EndGame()
+    {
+        // UI Ç¥½Ã
     }
 }

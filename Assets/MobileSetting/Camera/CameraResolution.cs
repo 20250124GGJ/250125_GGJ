@@ -9,7 +9,7 @@ public class CameraResolution : MonoBehaviour
     {
         Camera camera = GetComponent<Camera>();
         Rect rect = camera.rect;
-        float scaleheight = ((float)Screen.width / Screen.height) / ((float)9 / 20);
+        float scaleheight = ((float)Screen.width / Screen.height) / ((float)9 / 16);
         float scalewidth = 1f / scaleheight;
 
         // 위 아래 공백 생성 (휴대폰이 날씬한 경우)
