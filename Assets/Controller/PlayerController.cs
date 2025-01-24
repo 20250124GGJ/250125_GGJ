@@ -20,14 +20,15 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Check : " + Bottle.ToString());
+            if(Bottle)
+            {
+                Bottle.GetComponent<Bottle>().AttackBottle(1.0f);   
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
             GameManager.Instance.NextTurn();
-
-            Debug.Log("Reset : " + GameManager.Instance.GetRedPlayerScore);
         }
     }
 }
