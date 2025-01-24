@@ -61,7 +61,6 @@ public class GameManager : MonoBehaviour
         {
             currentturn = 1;
         }
-        Debug.Log(currentturn);
 
         //병 생성
         CreateBottle(); 
@@ -76,6 +75,8 @@ public class GameManager : MonoBehaviour
 
         //턴 초기화
         currentturn = 1;
+
+        TotalBottle = 0;   
     }
 
     // Init
@@ -109,8 +110,10 @@ public class GameManager : MonoBehaviour
         int PrefabIndex = Random.Range(0, BottlePrefabs.Length);
         GameObject RandomPrefab = BottlePrefabs[PrefabIndex];
 
-        //GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
+        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
 
+        /*
+         * TEST
         Vector3 randomPosition = new Vector3
             (
             Random.Range(-5f, -3f),
@@ -120,6 +123,7 @@ public class GameManager : MonoBehaviour
 
         // 병을 생성
         GameObject BottlePrefab = Instantiate(RandomPrefab, randomPosition, Quaternion.identity);
+        */
 
         Bottle bottleComponent = BottlePrefab.GetComponent<Bottle>();
         if (bottleComponent)

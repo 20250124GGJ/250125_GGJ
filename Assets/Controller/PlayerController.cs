@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         {
             if(Bottle)
             {
-                Bottle.GetComponent<Bottle>().AttackBottle(1.0f);   
+                Bottle.GetComponent<Bottle>().AttackBottle(7.0f);   
             }
         }
 
