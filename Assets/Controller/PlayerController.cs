@@ -4,19 +4,28 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameObject Bottle;
+
+    public void SetBottle(GameObject InBottle)
+    {
+        Bottle = InBottle;
+    }
+
     // Update is called once per frame
-    void Update()
+    private void Start()
+    {
+        GameManager.Instance.SetPlayerController(this);
+    }
+    private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            GameManager.Instance.AddScoreToRedPlayer(10);
-
-            Debug.Log("Red : " + GameManager.Instance.GetRedPlayerScore);
+            Debug.Log("Check : " + Bottle.ToString());
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            GameManager.Instance.ResetGame();
+            GameManager.Instance.NextTurn();
 
             Debug.Log("Reset : " + GameManager.Instance.GetRedPlayerScore);
         }

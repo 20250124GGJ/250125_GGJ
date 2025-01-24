@@ -10,13 +10,26 @@ public class GameManager : MonoBehaviour
         private set;
     }
 
+    //Player Controller
+    private PlayerController playerController;
+        
+    //Turn
+    // 1 - Red, 2 - Blue
+    private int currentturn = 1;
+
     //플레이어의 점수 1 - Red, 2 - Blue
-    //참조값으로 사용 예정
     private int redplayerscore  = 0;
     private int blueplayerscore = 0;
 
     public int GetRedPlayerScore    => redplayerscore;
     public int GetBluePlayerScore   => blueplayerscore;
+
+    public GameObject[] BottlePrefabs;
+
+    public void SetPlayerController(PlayerController InPlayerController)
+    {
+        playerController = InPlayerController;
+    }
 
     // 1 플레이어 점수 증가 함수 -> 임의로 최대 점수 100으로 고정
     public void AddScoreToRedPlayer(int inscore)
@@ -24,8 +37,6 @@ public class GameManager : MonoBehaviour
         int score = Mathf.Clamp(inscore, 0, 100);
 
         redplayerscore = Mathf.Clamp(redplayerscore + score, 0, 1000);
-
-        Debug.Log("Red Add");
     }
     
     // 2 플레이어 점수 증가 함수
@@ -34,24 +45,39 @@ public class GameManager : MonoBehaviour
         int score = Mathf.Clamp(inscore, 0, 100);
 
         blueplayerscore = Mathf.Clamp(blueplayerscore + score, 0, 1000);
-
-        Debug.Log("Blue Add");
     }
 
-    // 매니저 초기화
+    // 턴 넘기기
+    public void NextTurn()
+    {
+        if (currentturn == 1)
+        {
+            currentturn = 2;
+        }
+        else
+        {
+            currentturn = 1;
+        }
+        Debug.Log(currentturn);
+
+        //병 생성
+        CreateBottle(); 
+    }
+
+    // 게임 초기화
     public void ResetGame()
     {
+        //플레이어 스코어 초기화
         redplayerscore  = 0;
         blueplayerscore = 0;
 
-        Debug.Log("Reset");
+        //턴 초기화
+        currentturn = 1;
     }
 
     // Init
     private void Awake()
     {
-        Debug.Log("Awake");
-
         if (Instance == null)
         {
             Instance = this;
@@ -61,5 +87,21 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void CreateBottle()
+    {
+        if(BottlePrefabs.Length==0)
+        {
+            Debug.Log("Object Arr Length is 0");
+            return;
+        }
+
+        int PrefabIndex = Random.Range(0, BottlePrefabs.Length);
+        GameObject RandomPrefab = BottlePrefabs[PrefabIndex];
+
+        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
+
+        playerController.SetBottle(BottlePrefab);
     }
 }

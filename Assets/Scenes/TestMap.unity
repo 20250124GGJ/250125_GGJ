@@ -374,6 +374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f381986938a0240bc1463d078a4131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BottlePrefabs:
+  - {fileID: 21372019584054466, guid: 8b34238fdcbffb24eb27d5434b8ff072, type: 3}
 --- !u!4 &1832475553
 Transform:
   m_ObjectHideFlags: 0
