@@ -5917,7 +5917,7 @@ MonoBehaviour:
   shakeCooldown: 0.5
   Energy: {fileID: 1911371241}
   Remain_Time: {fileID: 1001122221}
-  Shake: 0
+  Shake: 1
 --- !u!1 &1704850731
 GameObject:
   m_ObjectHideFlags: 0

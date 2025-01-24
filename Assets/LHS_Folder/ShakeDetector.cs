@@ -49,7 +49,7 @@ public class ShakeDetector : MonoBehaviour
         }
     }
 
-    public void OnStartShaking()
+    void OnStartShaking()
     {
         Shake = true;
     }
