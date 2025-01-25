@@ -91,6 +91,7 @@ public class ShakeDetector : MonoBehaviour
 
         if(Shake == true)
         {
+            Handheld.Vibrate();
             Energy.GetComponent<Slider>().value = Energy.GetComponent<Slider>().value + 0.03f;
             StartCoroutine(ShakeBottleY());
         }
