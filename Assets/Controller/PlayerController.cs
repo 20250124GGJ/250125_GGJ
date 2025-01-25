@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 lastTouchPosition; // 마지막 터치/마우스 위치
     private bool isDragging = false; // 드래그 중인지 확인
 
+    public float Throw_Angle = 0;
+    
     public void SetBottle(GameObject InBottle)
     {
         Bottle = InBottle;
@@ -33,18 +36,22 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.SetPlayerController(this);
+        GameManager.Instance.NextTurn();
+    }
+
+    public void Attack(float pulse)
+    {
+            if (Bottle)
+            {
+
+                Bottle.GetComponent<Bottle>().AttackBottle(pulse * 4.0f, Throw_Angle);
+            }
     }
 
     private void Update()
     {
         // 스페이스바로 병 공격
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (Bottle)
-            {
-                Bottle.GetComponent<Bottle>().AttackBottle(4.0f);
-            }
-        }
+        
 
         // A키로 각도 계산 후 턴 종료
         if (Input.GetKeyDown(KeyCode.A))
@@ -75,6 +82,8 @@ public class PlayerController : MonoBehaviour
         {
             isDragging = false;
             GameManager.Instance.ShakeTime();
+            Throw_Angle = RotateObject.transform.eulerAngles.y;
+
         }
 
         // 터치 입력 처리 (모바일)

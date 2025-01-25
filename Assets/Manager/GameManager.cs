@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private int TotalBottle = 0;
     //Player Controller
     private PlayerController playerController;
-        
+    private ShakeDetector shakeDetector;
     //Turn
     // 1 - Red, 2 - Blue
     private int currentturn = 1;
@@ -29,13 +29,21 @@ public class GameManager : MonoBehaviour
 
     public Score scoreCalculator;
 
+    public GameObject Arrow2;
+
     public bool ShakeTime_Check = false;
 
     public bool Angle = false;
+    
 
     public void SetPlayerController(PlayerController InPlayerController)
     {
         playerController = InPlayerController;
+    }
+
+    public void SetShakeDetector(ShakeDetector InShakeDetector)
+    {
+        shakeDetector = InShakeDetector;
     }
 
     // 1 플레이어 점수 증가 함수 -> 임의로 최대 점수 100으로 고정
@@ -57,6 +65,12 @@ public class GameManager : MonoBehaviour
     // 턴 넘기기
     public void NextTurn()
     {
+        if(!Arrow2.activeSelf)
+        {
+            Arrow2.SetActive(true);
+        }
+        
+        
         if (currentturn == 1)
         {
             currentturn = 2;
@@ -140,7 +154,9 @@ public class GameManager : MonoBehaviour
         int PrefabIndex = Random.Range(0, BottlePrefabs.Length);
         GameObject RandomPrefab = BottlePrefabs[PrefabIndex];
 
-        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
+        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.Euler(0f, -90f, 90f));
+
+
 
         /*
          * TEST

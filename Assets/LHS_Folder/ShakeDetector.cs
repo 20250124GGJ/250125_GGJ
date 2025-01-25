@@ -19,6 +19,8 @@ public class ShakeDetector : MonoBehaviour
     public GameObject Arrow;
 
     public bool Shake = false;
+
+    private bool isShaking = false;
     private float lastShakeTime;
     private float shakeTimer = 0f; // 사인파의 상태를 유지하기 위한 타이머
 
@@ -52,6 +54,7 @@ public class ShakeDetector : MonoBehaviour
             Shake = GameManager.Instance.ShakeTime_Check;
             if (Shake == true )
             {
+                Arrow.SetActive(false);
                 MainCamera.SetActive(false);
                 ShakeCamera.SetActive(true);
 
@@ -70,6 +73,8 @@ public class ShakeDetector : MonoBehaviour
             
         }
         // 임계값을 초과하면 흔들림으로 간주
+
+        
         
     }
 
@@ -95,17 +100,23 @@ public class ShakeDetector : MonoBehaviour
 
     private System.Collections.IEnumerator ResetShakeCheckAfterDelay(float delay)
     {
+        // 첫 번째 지연
         yield return new WaitForSeconds(delay);
 
         // shake_Check 값을 false로 변경
         Shake = false;
-
         MainCamera.SetActive(true);
         ShakeCamera.SetActive(false);
 
         GameManager.Instance.ShakeTime_Check = false;
+        PlayerController.Instance.Attack(Energy.GetComponent<Slider>().value);
+        Energy.GetComponent<Slider>().value = 0;
 
+        // 추가 3초 지연
+        
+        // 예: 추가 행동을 호출하거나 상태를 변경할 수 있음
     }
+
 
     private System.Collections.IEnumerator ShakeBottleY()
     {
