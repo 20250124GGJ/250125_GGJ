@@ -799,7 +799,7 @@ PlayerSettings:
     Purchasing: 0
     UDP: 0
     UNet: 1
-    Unity Ads: 1
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -813,11 +813,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 206cf2fb-45aa-41fb-bff0-e90cb50be292
+  cloudProjectId: e9a43edf-bf4f-4431-9b6f-367c03c7d907
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: GGJ_Bubble
-  organizationId: gksdidxornjs
+  organizationId: ypd01032
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
