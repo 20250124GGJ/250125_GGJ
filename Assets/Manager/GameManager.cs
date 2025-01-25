@@ -4,6 +4,58 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public class Event
+{
+    public int id { get; private set; }
+    public int RemainTurn { get; private set; }
+
+    public Event()
+    {
+
+    }
+    public Event(int id, int remainTurn)
+    {
+        this.id = id;
+        this.RemainTurn = remainTurn;
+    }
+
+    public void SetEvent(int id)
+    {
+        switch (id)
+        {
+            case 1:
+                this.id = 1;
+                this.RemainTurn = 3;
+                break;
+            case 2:
+                this.id = 2;
+                this.RemainTurn = 3;
+                break;
+            case 3:
+                this.id = 3;
+                this.RemainTurn = 3;
+                break;
+            case 4:
+                this.id = 4;
+                this.RemainTurn = 2;
+                break;
+            case 5:
+                this.id = 5;
+                this.RemainTurn = 4;
+                break;
+        }
+    }
+
+    //true -> 삭제필요
+    public bool DecreaseTurn()
+    {
+        RemainTurn--;
+
+        if (this.RemainTurn == 0) return true;
+        return false;
+    }
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance
@@ -48,6 +100,10 @@ public class GameManager : MonoBehaviour
 
     public bool Angle = false;
 
+    private bool    EventActive = false;
+    private Event   TurnEvent;
+    private int     TurenIndex = 0;
+
     void Start()
     {
         StartCoroutine(ShowTurnNotice());
@@ -79,13 +135,65 @@ public class GameManager : MonoBehaviour
     // 턴 넘기기
     public void NextTurn()
     {
+        //이벤트 여부 확인
+        if(4==TotalBottle)
+        {
+            Debug.Log("Event 발생");
+            int randvalue = Random.Range(0, 100);
+
+            Debug.Log(randvalue);
+
+            if(randvalue > 84)
+            {
+                TurnEvent = new Event();
+                TurnEvent.SetEvent(5);
+                EventActive = true;
+            }
+            else if(randvalue > 64)
+            {
+                TurnEvent = new Event();
+                TurnEvent.SetEvent(4);
+                EventActive = true;
+            }
+            else if (randvalue > 49)
+            {
+                TurnEvent = new Event();
+                TurnEvent.SetEvent(3);
+                EventActive = true;
+            }
+            else if (randvalue > 29)
+            {
+                TurnEvent = new Event();
+                TurnEvent.SetEvent(2);
+                EventActive = true;
+            }
+            else if (randvalue > 9)
+            {
+                TurnEvent = new Event();
+                TurnEvent.SetEvent(1);
+                EventActive = true;
+            }
+        }
+
         if (currentturn == 1)
         {
             currentturn = 2;
+            Debug.Log("R");
         }
         else
         {
             currentturn = 1;
+            Debug.Log("B");
+            if (EventActive)
+            {
+                bool isOk = TurnEvent.DecreaseTurn();
+                Debug.Log("이벤트 활성화 중" + TurnEvent.RemainTurn);
+                if (isOk)
+                {
+                    Debug.Log("이벤트 종료");
+                    EventActive = false;
+                }
+            }
         }
 
         //병 생성
@@ -168,7 +276,7 @@ public class GameManager : MonoBehaviour
             return false;
         }
 
-        if (4 == TotalBottle)
+        if (10 == TotalBottle)
         {
             EndGame();
             return false;
