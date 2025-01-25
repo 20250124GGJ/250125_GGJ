@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Drawing.Drawing2D;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
         
     //Turn
     // 1 - Red, 2 - Blue
-    private int currentturn = 1;
+    private int currentturn = 2;
 
     //플레이어의 점수 1 - Red, 2 - Blue
     private int redplayerscore  = 0;
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] BottlePrefabs;
 
     public Score scoreCalculator;
+    public GameObject Arrow;
 
     //결과 화면 패널
     public TextMeshProUGUI redPlayerScoreText;  
@@ -52,7 +54,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowTurnNotice());
 
         //병 생성
-        CreateBottle();
+        //CreateBottle();
     }
     public void SetPlayerController(PlayerController InPlayerController)
     {
@@ -91,7 +93,10 @@ public class GameManager : MonoBehaviour
 
         //병 생성
         CreateBottle();
-        
+        if (!Arrow.activeSelf) // Arrow가 비활성화 상태인지 확인
+        {
+            Arrow.SetActive(true); // 활성화
+        }
     }
 
     public void Choose_Bottle()
@@ -156,6 +161,9 @@ public class GameManager : MonoBehaviour
     {
         if (BottlePrefabs.Length == 0)
         {
+
+            
+
             Debug.Log("Object Arr Length is 0");
             return;
         }
@@ -169,7 +177,8 @@ public class GameManager : MonoBehaviour
         int PrefabIndex = Random.Range(0, BottlePrefabs.Length);
         GameObject RandomPrefab = BottlePrefabs[PrefabIndex];
 
-        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.identity);
+        GameObject BottlePrefab = Instantiate(RandomPrefab, Vector3.zero, Quaternion.Euler(0f, -90f, 90f));
+
 
         /*
          * TEST
