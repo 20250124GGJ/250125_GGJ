@@ -228,12 +228,14 @@ public class GameManager : MonoBehaviour
         if (redplayerscore > blueplayerscore)
         {
             redTeamWinImage.gameObject.SetActive(true);  
-            blueTeamWinImage.gameObject.SetActive(false); 
+            blueTeamWinImage.gameObject.SetActive(false);
+            drawImage.gameObject.SetActive(false);
         }
         else if (blueplayerscore > redplayerscore)
         {
             blueTeamWinImage.gameObject.SetActive(true);
-            redTeamWinImage.gameObject.SetActive(false); 
+            redTeamWinImage.gameObject.SetActive(false);
+            drawImage.gameObject.SetActive(false);
         }
         else
         {
