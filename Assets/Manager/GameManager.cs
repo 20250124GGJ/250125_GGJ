@@ -106,6 +106,11 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void GameStart()
+    {
+        CreateBottle();
+    }
+
     // 게임 초기화
     public void ResetGame()
     {
@@ -169,7 +174,9 @@ public class GameManager : MonoBehaviour
         if (bottleComponent)
         {
             bottleComponent.team = currentturn;
-        }
+            bottleComponent.AttachmentOutline();
+        }  
+
         playerController.SetBottle(BottlePrefab);
         TotalBottle++;
     }

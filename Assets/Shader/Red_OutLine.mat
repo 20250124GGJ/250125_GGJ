@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_OutLine
+  m_Name: Red_OutLine
   m_Shader: {fileID: -6465566751694194690, guid: 83d4b3bb98f998a4092c2398241ed29f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -26,7 +26,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _Scale: 1.05
     m_Colors:
-    - _Color: {r: 0, g: 0.14960027, b: 1, a: 0}
+    - _Color: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3373347847059620747
 MonoBehaviour:
