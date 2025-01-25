@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/YHS_FOLDER/Lobby.unity
+    guid: 9252cbae57a7acb409f0166cc0ecb653
+  - enabled: 1
+    path: Assets/YHS_FOLDER/Description Scene.unity
+    guid: ff32add8e6b55fc47b44ca3af3c91fc0
+  - enabled: 1
     path: Assets/LHS_Folder/Test_Scene.unity
     guid: 2640b87e738433c49b541af043aed9ed
   m_configObjects: {}
