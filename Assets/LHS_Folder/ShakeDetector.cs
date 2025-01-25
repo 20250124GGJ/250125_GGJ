@@ -58,6 +58,8 @@ public class ShakeDetector : MonoBehaviour
                 MainCamera.SetActive(false);
                 ShakeCamera.SetActive(true);
 
+                Energy.GetComponent<Slider>().value = 0.2f;
+
                 StartCoroutine(ResetShakeCheckAfterDelay(3f));
                 if (accelerationMagnitude > shakeThreshold && Time.time > lastShakeTime + shakeCooldown)
                 {
@@ -111,9 +113,11 @@ public class ShakeDetector : MonoBehaviour
         GameManager.Instance.ShakeTime_Check = false;
         PlayerController.Instance.Attack(Energy.GetComponent<Slider>().value);
         Energy.GetComponent<Slider>().value = 0;
+        
+
 
         // 추가 3초 지연
-        
+
         // 예: 추가 행동을 호출하거나 상태를 변경할 수 있음
     }
 

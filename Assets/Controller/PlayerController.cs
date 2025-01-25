@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private GameObject Bottle; // 공격할 병 오브젝트
     private GameObject RotateObject; // 회전시킬 오브젝트
 
+
     private Vector2 lastTouchPosition; // 마지막 터치/마우스 위치
     private bool isDragging = false; // 드래그 중인지 확인
 
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviour
             if (Bottle)
             {
 
-                Bottle.GetComponent<Bottle>().AttackBottle(pulse * 4.0f, Throw_Angle);
+                Bottle.GetComponent<Bottle>().AttackBottle(pulse * 20.0f, Throw_Angle);
             }
     }
 
@@ -106,6 +107,7 @@ public class PlayerController : MonoBehaviour
             {
                 isDragging = false;
                 GameManager.Instance.ShakeTime();
+                Throw_Angle = RotateObject.transform.eulerAngles.y;
             }
         }
     }
@@ -140,13 +142,25 @@ public class PlayerController : MonoBehaviour
                 currentYRotation += 360f;
             }
 
+            // RotateObject의 회전값 적용
             RotateObject.transform.localEulerAngles = new Vector3(
                 RotateObject.transform.localEulerAngles.x,
                 currentYRotation,
                 RotateObject.transform.localEulerAngles.z
             );
+
+            // Bottle이 null이 아닌 경우 RotateObject와 동일한 회전값 적용
+            if (Bottle != null)
+            {
+                Bottle.transform.localEulerAngles = new Vector3(
+                    Bottle.transform.localEulerAngles.x,
+                    currentYRotation + 270.0f,
+                    Bottle.transform.localEulerAngles.z
+                );
+            }
         }
     }
+
 
 
 }

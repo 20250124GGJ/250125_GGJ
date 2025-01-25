@@ -13,10 +13,9 @@ public class Bottle : MonoBehaviour
 
     public void AttackBottle(float InPower, float Angle)
     {
-        // 오브젝트를 회전시킨다
-
-        transform.rotation *= Quaternion.Euler(Angle, 0f, 0f);
-
+        // 오브젝트를 특정 각도로 한 번만 회전
+        //Quaternion targetRotation = Quaternion.Euler(Angle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+        //transform.rotation = targetRotation;
 
         // 병의 회전된 방향에 맞는 힘을 적용
         Vector3 fwd = -transform.up;  // 회전된 후의 방향
@@ -33,6 +32,7 @@ public class Bottle : MonoBehaviour
             StartCoroutine(CheckPositionContinuously());
         }
     }
+
 
     public void AttachmentOutline()
     {
