@@ -8,10 +8,6 @@ public class Bottle : MonoBehaviour
 
     private Rigidbody rb;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
     public void AttackBottle(float InPower)
     {
         Vector3 fwd = transform.forward;
@@ -24,5 +20,10 @@ public class Bottle : MonoBehaviour
     public Vector3 GetForwardVector()
     {
         return transform.forward;
+    }
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
     }
 }
