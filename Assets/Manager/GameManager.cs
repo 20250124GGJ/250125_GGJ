@@ -37,12 +37,23 @@ public class GameManager : MonoBehaviour
     public Image redTeamWinImage; 
     public Image blueTeamWinImage;
     public Image drawImage;
-    public GameObject resultPanel;   
+    public GameObject resultPanel;
+
+    //턴 고지 패널
+    public Image blueTeamTurnNotice;
+    public Image redTeamTurnNotice;
 
     public bool ShakeTime_Check = false;
 
     public bool Angle = false;
 
+    void Start()
+    {
+        StartCoroutine(ShowTurnNotice());
+
+        //병 생성
+        CreateBottle();
+    }
     public void SetPlayerController(PlayerController InPlayerController)
     {
         playerController = InPlayerController;
@@ -76,8 +87,11 @@ public class GameManager : MonoBehaviour
             currentturn = 1;
         }
 
+        StartCoroutine(ShowTurnNotice());
+
         //병 생성
-        CreateBottle(); 
+        CreateBottle();
+        
     }
 
     public void Choose_Bottle()
@@ -218,5 +232,40 @@ public class GameManager : MonoBehaviour
             blueTeamWinImage.gameObject.SetActive(false);
             drawImage.gameObject.SetActive(true);
         }
+    }
+
+    IEnumerator ShowTurnNotice()
+    {
+        // 각 팀의 턴을 표시하는 이미지 활성화
+        if (currentturn == 1)
+        {
+            redTeamTurnNotice.gameObject.SetActive(false);
+            blueTeamTurnNotice.gameObject.SetActive(true);
+        }
+        else
+        {
+            blueTeamTurnNotice.gameObject.SetActive(false);
+            redTeamTurnNotice.gameObject.SetActive(true);
+        }
+
+        // 일정 시간이 지난 후 fadeOut 시작
+        yield return new WaitForSeconds(1f);  // 턴 고지가 나타난 후 대기 시간
+        StartCoroutine(FadeOut());
+    }
+
+    IEnumerator FadeOut()
+    {
+        Image activeNotice = (currentturn == 1) ? blueTeamTurnNotice : redTeamTurnNotice;
+        float time = 0f;
+
+        while (time < 1f)
+        {
+            time += Time.deltaTime;
+            activeNotice.color = new Color(1f, 1f, 1f, 1f - time);  // 알파값을 점차 감소시킴
+
+            yield return null;
+        }
+
+        activeNotice.gameObject.SetActive(false);  // FadeOut 후 이미지 비활성화
     }
 }
