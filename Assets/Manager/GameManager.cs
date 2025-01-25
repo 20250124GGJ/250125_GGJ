@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (20 == TotalBottle)
+        if (10 == TotalBottle)
         {
             EndGame();
             return;
@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("bluePlayerScore : "+ blueplayerscore);
         Debug.Log("redPlayerScore : "+ redplayerscore);
 
+        ResetGame();
         StartCoroutine(ShowResult());
     }
 
