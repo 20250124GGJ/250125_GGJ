@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Bottle : MonoBehaviour
 {
-    SoundManager soundManager;
-
     public int team;
     public Material[] OutLineMaterials;
 
@@ -27,7 +25,7 @@ public class Bottle : MonoBehaviour
 
         // 힘을 적용하여 병을 날리기
         rb.AddForce(fwd * InPower, ForceMode.Impulse);
-        soundManager.PlaySFX(soundManager.fire);
+
         // 병의 이동 상태를 추적 시작
         if (!isCheckingPosition)
         {
@@ -68,7 +66,6 @@ public class Bottle : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
     }
 
     private IEnumerator CheckPositionContinuously()
