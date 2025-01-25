@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,6 +30,14 @@ public class GameManager : MonoBehaviour
     public GameObject[] BottlePrefabs;
 
     public Score scoreCalculator;
+
+    //결과 화면 패널
+    public TextMeshProUGUI redPlayerScoreText;  
+    public TextMeshProUGUI bluePlayerScoreText; 
+    public Image redTeamWinImage; 
+    public Image blueTeamWinImage;
+    public Image drawImage;
+    public GameObject resultPanel;   
 
     public bool ShakeTime_Check = false;
 
@@ -172,5 +182,34 @@ public class GameManager : MonoBehaviour
         // UI 표시
         Debug.Log("bluePlayerScore : "+ blueplayerscore);
         Debug.Log("redPlayerScore : "+ redplayerscore);
+
+        StartCoroutine(ShowResult());
+    }
+
+    IEnumerator ShowResult()
+    {
+        yield return new WaitForSeconds(1f);
+
+        resultPanel.SetActive(true);
+
+        redPlayerScoreText.text = redplayerscore.ToString();
+        bluePlayerScoreText.text = blueplayerscore.ToString();
+
+        if (redplayerscore > blueplayerscore)
+        {
+            redTeamWinImage.gameObject.SetActive(true);  
+            blueTeamWinImage.gameObject.SetActive(false); 
+        }
+        else if (blueplayerscore > redplayerscore)
+        {
+            blueTeamWinImage.gameObject.SetActive(true);
+            redTeamWinImage.gameObject.SetActive(false); 
+        }
+        else
+        {
+            redTeamWinImage.gameObject.SetActive(false);
+            blueTeamWinImage.gameObject.SetActive(false);
+            drawImage.gameObject.SetActive(true);
+        }
     }
 }
