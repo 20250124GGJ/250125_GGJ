@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     public string levelToLoad;
     public SceneFader scenefader;
     public GameObject settingPanel;
+    public GameObject creditPanel;
 
     private void Awake()
     {
@@ -26,9 +27,16 @@ public class MainMenu : MonoBehaviour
         settingPanel.SetActive(true);
     }
 
+    public void Credit()
+    {
+        soundManager.PlaySFX(soundManager.click);
+        creditPanel.SetActive(true);
+    }
+
     public void Close()
     {
         soundManager.PlaySFX(soundManager.click);
         settingPanel.SetActive(false);
+        creditPanel.SetActive(false);
     }
 }

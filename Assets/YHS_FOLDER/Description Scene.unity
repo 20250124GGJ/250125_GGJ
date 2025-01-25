@@ -585,7 +585,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: X10
+  m_text: X5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66c6122fc4c9f874485f46205dab07f1, type: 2}
   m_sharedMaterial: {fileID: 1393410344976735800, guid: 66c6122fc4c9f874485f46205dab07f1, type: 2}
@@ -3306,6 +3306,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelToLoad: New_Scene2
   scenefader: {fileID: 784489376}
+  settingPanel: {fileID: 0}
+  creditPanel: {fileID: 0}
 --- !u!1 &1646249854
 GameObject:
   m_ObjectHideFlags: 0
@@ -3592,7 +3594,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: X10
+  m_text: X5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66c6122fc4c9f874485f46205dab07f1, type: 2}
   m_sharedMaterial: {fileID: 1393410344976735800, guid: 66c6122fc4c9f874485f46205dab07f1, type: 2}
