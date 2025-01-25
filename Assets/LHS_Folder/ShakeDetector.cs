@@ -13,13 +13,22 @@ public class ShakeDetector : MonoBehaviour
     public GameObject Energy;
     public GameObject Bottle_Shaking;
 
+    public GameObject MainCamera;
+    public GameObject ShakeCamera;
+
+    public GameObject Arrow;
+
     public bool Shake = false;
     private float lastShakeTime;
     private float shakeTimer = 0f; // 사인파의 상태를 유지하기 위한 타이머
 
     private Vector3 originalRotation; // 오브젝트의 초기 회전값
+    
+
     void Start()
     {
+        PlayerController.Instance.SetRotateObject(Arrow);
+
         originalRotation = Bottle_Shaking.transform.localEulerAngles;
         // 자이로스코프 활성화 (필요한 경우)
         if (SystemInfo.supportsGyroscope) // 장치가 자이로를 지원하는지 확인
@@ -38,18 +47,30 @@ public class ShakeDetector : MonoBehaviour
         // 현재 가속도 값을 가져오기
         Vector3 acceleration = Input.acceleration; // 스마트폰의 가속도 데이터
         float accelerationMagnitude = acceleration.magnitude; // 가속도 크기 계산
-
-        // 임계값을 초과하면 흔들림으로 간주
-        if (accelerationMagnitude > shakeThreshold && Time.time > lastShakeTime + shakeCooldown)
+        if(GameManager.Instance.ShakeTime_Check == true)
         {
-            Debug.Log(accelerationMagnitude);
-            lastShakeTime = Time.time;
+            Shake = GameManager.Instance.ShakeTime_Check;
+            if (Shake == true )
+            {
+                MainCamera.SetActive(false);
+                ShakeCamera.SetActive(true);
+
+                StartCoroutine(ResetShakeCheckAfterDelay(3f));
+                if (accelerationMagnitude > shakeThreshold && Time.time > lastShakeTime + shakeCooldown)
+                {
+                    Debug.Log(accelerationMagnitude);
+                    lastShakeTime = Time.time;
 
 
 
-            // 흔들림 발생 시 추가 처리
-            OnShakeDetected();
+                    // 흔들림 발생 시 추가 처리
+                    OnShakeDetected();
+                }
+            }
+            
         }
+        // 임계값을 초과하면 흔들림으로 간주
+        
     }
 
     void OnStartShaking()
@@ -70,6 +91,20 @@ public class ShakeDetector : MonoBehaviour
         
 
         // 여기에 흔들림으로 실행할 동작을 추가하세요
+    }
+
+    private System.Collections.IEnumerator ResetShakeCheckAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // shake_Check 값을 false로 변경
+        Shake = false;
+
+        MainCamera.SetActive(true);
+        ShakeCamera.SetActive(false);
+
+        GameManager.Instance.ShakeTime_Check = false;
+
     }
 
     private System.Collections.IEnumerator ShakeBottleY()

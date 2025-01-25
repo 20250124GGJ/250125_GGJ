@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
 
     public Score scoreCalculator;
 
+    public bool ShakeTime_Check = false;
+
+    public bool Angle = false;
+
     public void SetPlayerController(PlayerController InPlayerController)
     {
         playerController = InPlayerController;
@@ -64,6 +68,32 @@ public class GameManager : MonoBehaviour
 
         //병 생성
         CreateBottle(); 
+    }
+
+    public void Choose_Bottle()
+    {
+
+    }
+
+    public void Angle_Search()
+    {
+        
+        Angle = true;
+        
+        //일련의 작업 수행
+        //각도 계산하기 터치?
+        
+    }
+
+    public void ShakeTime()
+    {
+        ShakeTime_Check = true;
+        
+    }
+
+    public void returnTime()
+    {
+        
     }
 
     // 게임 초기화
