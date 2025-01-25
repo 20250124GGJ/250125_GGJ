@@ -610,7 +610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &188223711
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2451,7 +2451,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2492,6 +2492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelToLoad: Lobby
   scenefader: {fileID: 1317988055}
+  settingPanel: {fileID: 0}
 --- !u!1 &1023985885
 GameObject:
   m_ObjectHideFlags: 0
