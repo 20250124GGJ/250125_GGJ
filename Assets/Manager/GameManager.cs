@@ -66,6 +66,11 @@ public class GameManager : MonoBehaviour
         CreateBottle(); 
     }
 
+    public void StartGame()
+    {
+        CreateBottle();
+    }
+
     // 게임 초기화
     public void ResetGame()
     {
