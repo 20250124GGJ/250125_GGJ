@@ -6,8 +6,6 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class ShakeDetector : MonoBehaviour
 {
-    SoundManager soundManager;
-
     // 감지 민감도와 쿨다운 시간
     public float shakeThreshold = 2.5f; // 흔들림 민감도
     public float shakeCooldown = 0.1f;  // 연속 감지 방지를 위한 쿨다운 타임
@@ -28,10 +26,7 @@ public class ShakeDetector : MonoBehaviour
 
     private Vector3 originalRotation; // 오브젝트의 초기 회전값
 
-    private void Awake()
-    {
-        soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
-    }
+    private bool reset = true;
 
     void Start()
     {
@@ -64,6 +59,13 @@ public class ShakeDetector : MonoBehaviour
                 MainCamera.SetActive(false);
                 ShakeCamera.SetActive(true);
 
+                if(reset == true)
+                {
+                    Energy.GetComponent<Slider>().value = 0.2f;
+                    reset = false;
+                }
+                
+
                 StartCoroutine(ResetShakeCheckAfterDelay(3f));
                 if (accelerationMagnitude > shakeThreshold && Time.time > lastShakeTime + shakeCooldown)
                 {
@@ -95,7 +97,7 @@ public class ShakeDetector : MonoBehaviour
 
         if(Shake == true)
         {
-            soundManager.PlaySFX(soundManager.shakeSound);
+            Handheld.Vibrate();
             Energy.GetComponent<Slider>().value = Energy.GetComponent<Slider>().value + 0.03f;
             StartCoroutine(ShakeBottleY());
         }
@@ -114,13 +116,16 @@ public class ShakeDetector : MonoBehaviour
         Shake = false;
         MainCamera.SetActive(true);
         ShakeCamera.SetActive(false);
-
+        
         GameManager.Instance.ShakeTime_Check = false;
+        reset = true;
         PlayerController.Instance.Attack(Energy.GetComponent<Slider>().value);
         Energy.GetComponent<Slider>().value = 0;
+        
+
 
         // 추가 3초 지연
-        
+
         // 예: 추가 행동을 호출하거나 상태를 변경할 수 있음
     }
 
