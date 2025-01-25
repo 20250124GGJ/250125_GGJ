@@ -25,7 +25,8 @@ public class ShakeDetector : MonoBehaviour
     private float shakeTimer = 0f; // 사인파의 상태를 유지하기 위한 타이머
 
     private Vector3 originalRotation; // 오브젝트의 초기 회전값
-    
+
+    private bool reset = true;
 
     void Start()
     {
@@ -58,7 +59,12 @@ public class ShakeDetector : MonoBehaviour
                 MainCamera.SetActive(false);
                 ShakeCamera.SetActive(true);
 
-                Energy.GetComponent<Slider>().value = 0.2f;
+                if(reset == true)
+                {
+                    Energy.GetComponent<Slider>().value = 0.2f;
+                    reset = false;
+                }
+                
 
                 StartCoroutine(ResetShakeCheckAfterDelay(3f));
                 if (accelerationMagnitude > shakeThreshold && Time.time > lastShakeTime + shakeCooldown)
@@ -110,8 +116,9 @@ public class ShakeDetector : MonoBehaviour
         Shake = false;
         MainCamera.SetActive(true);
         ShakeCamera.SetActive(false);
-
+        
         GameManager.Instance.ShakeTime_Check = false;
+        reset = true;
         PlayerController.Instance.Attack(Energy.GetComponent<Slider>().value);
         Energy.GetComponent<Slider>().value = 0;
         
