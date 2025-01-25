@@ -4,6 +4,7 @@ using UnityEngine;
 public class Bottle : MonoBehaviour
 {
     public int team;
+    public Material[] OutLineMaterials;
 
     private Rigidbody rb;
     private Vector3 lastPosition; // 이전 위치 저장
@@ -30,6 +31,29 @@ public class Bottle : MonoBehaviour
         if (!isCheckingPosition)
         {
             StartCoroutine(CheckPositionContinuously());
+        }
+    }
+
+    public void AttachmentOutline()
+    {
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+
+        if (meshRenderer)
+        {
+            Material[] sharedMaterials = meshRenderer.sharedMaterials;
+
+
+            Material[] updatedMaterials = new Material[sharedMaterials.Length + 1];
+
+
+            for (int i = 0; i < sharedMaterials.Length; i++)
+            {
+                updatedMaterials[i] = sharedMaterials[i];
+            }
+
+            updatedMaterials[sharedMaterials.Length] = OutLineMaterials[team - 1];
+
+            meshRenderer.sharedMaterials = updatedMaterials;
         }
     }
 
