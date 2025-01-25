@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Drawing.Drawing2D;
 
 public class GameManager : MonoBehaviour
 {
@@ -257,9 +256,8 @@ public class GameManager : MonoBehaviour
             redTeamTurnNotice.gameObject.SetActive(true);
         }
 
-        // 일정 시간이 지난 후 fadeOut 시작
-        yield return new WaitForSeconds(1f);  // 턴 고지가 나타난 후 대기 시간
         StartCoroutine(FadeOut());
+        yield return null;
     }
 
     IEnumerator FadeOut()
