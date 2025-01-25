@@ -215,7 +215,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("bluePlayerScore : "+ blueplayerscore);
         Debug.Log("redPlayerScore : "+ redplayerscore);
 
-        ResetGame();
         StartCoroutine(ShowResult());
     }
 
@@ -227,6 +226,9 @@ public class GameManager : MonoBehaviour
 
         redPlayerScoreText.text = redplayerscore.ToString();
         bluePlayerScoreText.text = blueplayerscore.ToString();
+        Debug.Log(redplayerscore.ToString());
+
+        Debug.Log(blueplayerscore.ToString());
 
         if (redplayerscore > blueplayerscore)
         {
@@ -246,6 +248,8 @@ public class GameManager : MonoBehaviour
             blueTeamWinImage.gameObject.SetActive(false);
             drawImage.gameObject.SetActive(true);
         }
+
+        ResetGame();
     }
 
     IEnumerator ShowTurnNotice()
