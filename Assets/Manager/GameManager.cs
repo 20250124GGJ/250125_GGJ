@@ -88,13 +88,17 @@ public class GameManager : MonoBehaviour
             currentturn = 1;
         }
 
-        StartCoroutine(ShowTurnNotice());
-
         //병 생성
-        CreateBottle();
-        if (!Arrow.activeSelf) // Arrow가 비활성화 상태인지 확인
+        bool isCreate = CreateBottle();
+
+        if (isCreate)
         {
-            Arrow.SetActive(true); // 활성화
+            StartCoroutine(ShowTurnNotice());
+
+            if (!Arrow.activeSelf) // Arrow가 비활성화 상태인지 확인
+            {
+                Arrow.SetActive(true); // 활성화
+            }
         }
     }
 
@@ -156,21 +160,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void CreateBottle()
+    private bool CreateBottle()
     {
         if (BottlePrefabs.Length == 0)
         {
-
-            
-
             Debug.Log("Object Arr Length is 0");
-            return;
+            return false;
         }
 
-        if (10 == TotalBottle)
+        if (4 == TotalBottle)
         {
             EndGame();
-            return;
+            return false;
         }
 
         int PrefabIndex = Random.Range(0, BottlePrefabs.Length);
@@ -201,6 +202,8 @@ public class GameManager : MonoBehaviour
 
         playerController.SetBottle(BottlePrefab);
         TotalBottle++;
+
+        return true;
     }
 
     private void EndGame()
@@ -260,6 +263,8 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine(FadeOut());
+  
+
         yield return null;
     }
 
