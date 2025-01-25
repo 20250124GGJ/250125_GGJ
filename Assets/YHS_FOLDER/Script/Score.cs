@@ -19,7 +19,7 @@ public class Score : MonoBehaviour
     {
 
         bottles = GameObject.FindGameObjectsWithTag("Bottle");  // Bottle 태그를 가진 모든 게임 오브젝트를 가져옵니다.
-        Debug.Log(bottles.Length);
+        Debug.Log("Calc" + bottles.Length);
         foreach (GameObject bottle in bottles)
         {
             if (bottle)
@@ -57,7 +57,7 @@ public class Score : MonoBehaviour
                     
                 }
             }
-            bottle.SetActive(false);    
+            //bottle.SetActive(false);    
             //Destroy(bottle);
         }
         
