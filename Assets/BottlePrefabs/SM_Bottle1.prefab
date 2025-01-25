@@ -113,6 +113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+  OutLineMaterials:
+  - {fileID: 2100000, guid: 877f58fd9b7a3b34b9dd2f76bb775a21, type: 2}
+  - {fileID: 2100000, guid: aa02f9c684db76a4aa6892c62f2d5904, type: 2}
 --- !u!54 &8924731217492495331
 Rigidbody:
   m_ObjectHideFlags: 0
