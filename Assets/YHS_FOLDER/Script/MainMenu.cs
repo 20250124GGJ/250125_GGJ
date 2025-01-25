@@ -4,31 +4,11 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    SoundManager soundManager;
-
     public string levelToLoad;
     public SceneFader scenefader;
-    public GameObject settingPanel;
 
-    private void Awake()
-    {
-        soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
-    }
     public void Play()
     {
-        soundManager.PlaySFX(soundManager.click);
         scenefader.FadeTo(levelToLoad);
-    }
-
-    public void Setting()
-    {
-        soundManager.PlaySFX(soundManager.click);
-        settingPanel.SetActive(true);
-    }
-
-    public void Close()
-    {
-        soundManager.PlaySFX(soundManager.click);
-        settingPanel.SetActive(false);
     }
 }
