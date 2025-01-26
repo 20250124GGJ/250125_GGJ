@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         private set;
     }
 
+    private List<GameObject> droppedFoods = new List<GameObject>();
     private int TotalBottle = 0;
     //Player Controller
     private PlayerController playerController;
@@ -200,6 +201,7 @@ public class GameManager : MonoBehaviour
                             //얼음바닥(힘1.5배)
                             break;
                         case 3:
+                            FoodDropEvent();
                             //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
                             break;
                         case 4:
@@ -225,6 +227,7 @@ public class GameManager : MonoBehaviour
                             //얼음바닥(힘1.5배) 변수(원래값 1 -> 1.5) 1.5->1
                             break;
                         case 3:
+                            RemoveDroppedFoods();
                             //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
                             break;
                         case 4:
@@ -436,7 +439,7 @@ public class GameManager : MonoBehaviour
         activeNotice.gameObject.SetActive(false);  // FadeOut 후 이미지 비활성화
     }
 
-    IEnumerator FoodDropEvent()
+    public void FoodDropEvent()
     {
         // 음식 4개를 생성
         for (int i = 0; i < 4; i++)
@@ -453,12 +456,22 @@ public class GameManager : MonoBehaviour
             GameObject selectedFoodPrefab = foodPrefabs[randomFoodIndex];
 
             // 랜덤으로 선택된 음식 프리팹을 해당 위치에 생성
-            Instantiate(selectedFoodPrefab, spawnPosition, Quaternion.identity);
+            GameObject foodInstance = Instantiate(selectedFoodPrefab, spawnPosition, Quaternion.identity);
 
-            // 음식이 떨어지는 간격을 두기 위해 0.5초 대기
-            yield return new WaitForSeconds(0.5f);
+            // 생성된 음식을 리스트에 추가
+            droppedFoods.Add(foodInstance);
+        }
+    }
+
+    public void RemoveDroppedFoods()
+    {
+        // 리스트에 있는 음식들을 삭제
+        foreach (GameObject food in droppedFoods)
+        {
+            Destroy(food);  // 음식 오브젝트 삭제
         }
 
-        yield return null;
+        // 리스트 비우기
+        droppedFoods.Clear();
     }
 }

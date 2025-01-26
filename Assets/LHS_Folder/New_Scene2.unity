@@ -11928,6 +11928,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BottlePrefabs:
   - {fileID: 3902069071855398336, guid: ce2ed10b99f8381429079cbc2849a011, type: 3}
+  foodPrefabs:
+  - {fileID: 1615572350577670624, guid: 78bcd3bc6caf9cd438cb3e26e2437ab2, type: 3}
+  - {fileID: 857532527458331664, guid: b1af78543bafc8747bff1e7d148eb338, type: 3}
+  - {fileID: 8961077982916596450, guid: 8a26b97ae1eb48c488f69d21f363fffb, type: 3}
+  - {fileID: 808926888670364773, guid: 36af4939a17a06248b04e6ef4e28c3c6, type: 3}
   scoreCalculator: {fileID: 789130374}
   Arrow: {fileID: 1355155657}
   redPlayerScoreText: {fileID: 225838422}
