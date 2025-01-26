@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         private set;
     }
 
+    private List<GameObject> droppedFoods = new List<GameObject>();
     private int TotalBottle = 0;
     //Player Controller
     private PlayerController playerController;
@@ -82,9 +83,12 @@ public class GameManager : MonoBehaviour
     public int GetBluePlayerScore   => blueplayerscore;
 
     public GameObject[] BottlePrefabs;
+    public GameObject[] foodPrefabs;
 
     public Score scoreCalculator;
     public GameObject Arrow;
+    public GameObject leftWall;
+    public GameObject rightWall;
 
     //결과 화면 패널
     public TextMeshProUGUI redPlayerScoreText;  
@@ -104,7 +108,7 @@ public class GameManager : MonoBehaviour
 
     private bool    EventActive = false;
     private Event   TurnEvent;
-    private int     TurenIndex = 0;
+    private bool    EventCall = false;
 
     void Start()
     {
@@ -188,12 +192,55 @@ public class GameManager : MonoBehaviour
             Debug.Log("B");
             if (EventActive)
             {
+                if(EventCall == false)
+                {
+                    EventCall = true;
+                    //이벤트 최초 호출
+                    switch(TurnEvent.id)
+                    {
+                        case 1:
+                            RemoveWall();
+                            //벽 제거(사이드 벽 비활성화)
+                            break;
+                        case 2:
+                            //얼음바닥(힘1.5배)
+                            break;
+                        case 3:
+                            FoodDropEvent();
+                            //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
+                            break;
+                        case 4:
+                            //소스 범벅 -> UI 활성화
+                            break;
+                        case 5:
+                            //접시 축소 -> 변수하나 만들어서 나중에 점수 구할때 30% 점수 까면됨 ㅇㅇ
+                            break;
+                    }
+                }
+               
                 bool isOk = TurnEvent.DecreaseTurn();
                 Debug.Log("이벤트 활성화 중" + TurnEvent.RemainTurn);
                 if (isOk)
                 {
                     Debug.Log("이벤트 종료");
-                    EventActive = false;
+                    switch (TurnEvent.id)
+                    {
+                        case 1:
+                            //벽 활성화
+                            CreateWall();
+                            break;
+                        case 2:
+                            //얼음바닥(힘1.5배) 변수(원래값 1 -> 1.5) 1.5->1
+                            break;
+                        case 3:
+                            RemoveDroppedFoods();
+                            //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
+                            break;
+                        case 4:
+                            //소스 범벅 -> UI 비활성화
+                            break;
+                    }
+                            EventActive = false;
                 }
             }
         }
@@ -396,5 +443,53 @@ public class GameManager : MonoBehaviour
         }
 
         activeNotice.gameObject.SetActive(false);  // FadeOut 후 이미지 비활성화
+    }
+
+    public void FoodDropEvent()
+    {
+        // 음식 4개를 생성
+        for (int i = 0; i < 4; i++)
+        {
+            // 랜덤 위치 계산
+            float randomX = Random.Range(-1f, 1f);  // x축 -1 ~ 1 범위
+            float randomY = 3f;  // y축 고정값 3
+            float randomZ = Random.Range(2f, 5f);  // z축 2 ~ 5 범위
+
+            Vector3 spawnPosition = new Vector3(randomX, randomY, randomZ);
+
+            // 4개 음식 프리팹 중에서 랜덤으로 선택
+            int randomFoodIndex = Random.Range(0, foodPrefabs.Length);  // 0 ~ 3 인덱스 선택
+            GameObject selectedFoodPrefab = foodPrefabs[randomFoodIndex];
+
+            // 랜덤으로 선택된 음식 프리팹을 해당 위치에 생성
+            GameObject foodInstance = Instantiate(selectedFoodPrefab, spawnPosition, Quaternion.identity);
+
+            // 생성된 음식을 리스트에 추가
+            droppedFoods.Add(foodInstance);
+        }
+    }
+
+    public void RemoveDroppedFoods()
+    {
+        // 리스트에 있는 음식들을 삭제
+        foreach (GameObject food in droppedFoods)
+        {
+            Destroy(food);  // 음식 오브젝트 삭제
+        }
+
+        // 리스트 비우기
+        droppedFoods.Clear();
+    }
+
+    public void RemoveWall()
+    {
+        leftWall.gameObject.SetActive(false);
+        rightWall.gameObject.SetActive(false);
+    }
+
+    public void CreateWall()
+    {
+        leftWall.gameObject.SetActive(true);
+        rightWall.gameObject.SetActive(true);
     }
 }
