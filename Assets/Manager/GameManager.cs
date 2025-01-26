@@ -103,6 +103,13 @@ public class GameManager : MonoBehaviour
     public Image blueTeamTurnNotice;
     public Image redTeamTurnNotice;
 
+    //이벤트 고지 패널
+    public Image wallBreak;
+    public Image iceBoard;
+    public Image foodDrop;
+    public Image sauceShower;
+    public Image aimSmall;
+
     public bool ShakeTime_Check = false;
 
     public bool Angle = false;
@@ -156,30 +163,35 @@ public class GameManager : MonoBehaviour
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(5);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if(randvalue > 64)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(4);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if (randvalue > 49)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(3);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if (randvalue > 29)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(2);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if (randvalue > 9)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(1);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
         }
@@ -419,8 +431,18 @@ public class GameManager : MonoBehaviour
         // 각 팀의 턴을 표시하는 이미지 활성화
         if (currentturn == 1)
         {
-            redTeamTurnNotice.gameObject.SetActive(false);
-            blueTeamTurnNotice.gameObject.SetActive(true);
+            if(EventCall)
+            {
+                yield return new WaitForSeconds(2f);
+                redTeamTurnNotice.gameObject.SetActive(false);
+                blueTeamTurnNotice.gameObject.SetActive(true);
+            }
+            else
+            {
+                redTeamTurnNotice.gameObject.SetActive(false);
+                blueTeamTurnNotice.gameObject.SetActive(true);
+            }
+            
         }
         else
         {
@@ -432,6 +454,53 @@ public class GameManager : MonoBehaviour
   
 
         yield return null;
+    }
+
+    IEnumerator EventPanelShow()
+    {
+        if(TurnEvent.id==1)
+        {
+            wallBreak.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 2)
+        {
+            iceBoard.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 3)
+        {
+            foodDrop.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 4)
+        {
+            sauceShower.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 5)
+        {
+            aimSmall.gameObject.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        if (TurnEvent.id == 1)
+        {
+            wallBreak.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 2)
+        {
+            iceBoard.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 3)
+        {
+            foodDrop.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 4)
+        {
+            sauceShower.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 5)
+        {
+            aimSmall.gameObject.SetActive(false);
+        }
     }
 
     IEnumerator FadeOut()

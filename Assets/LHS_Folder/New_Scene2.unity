@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
+  m_IndirectSpecularColor: {r: 0.172768, g: 0.21589169, b: 0.29782546, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12331,6 +12331,11 @@ MonoBehaviour:
   resultPanel: {fileID: 188223710}
   blueTeamTurnNotice: {fileID: 1940172020}
   redTeamTurnNotice: {fileID: 266846173}
+  wallBreak: {fileID: 799293578}
+  iceBoard: {fileID: 1557358167}
+  foodDrop: {fileID: 1491632496}
+  sauceShower: {fileID: 379296290}
+  aimSmall: {fileID: 1750128627}
   ShakeTime_Check: 0
   Angle: 1
   Shake_Detector: {fileID: 268191714}
