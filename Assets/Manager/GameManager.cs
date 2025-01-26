@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
 
     private bool    EventActive = false;
     private Event   TurnEvent;
-    private int     TurenIndex = 0;
+    private bool    EventCall = false;
 
     void Start()
     {
@@ -187,12 +187,51 @@ public class GameManager : MonoBehaviour
             Debug.Log("B");
             if (EventActive)
             {
+                if(EventCall == false)
+                {
+                    EventCall = true;
+                    //이벤트 최초 호출
+                    switch(TurnEvent.id)
+                    {
+                        case 1:
+                            //벽 제거(사이드 벽 비활성화)
+                            break;
+                        case 2:
+                            //얼음바닥(힘1.5배)
+                            break;
+                        case 3:
+                            //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
+                            break;
+                        case 4:
+                            //소스 범벅 -> UI 활성화
+                            break;
+                        case 5:
+                            //접시 축소 -> 변수하나 만들어서 나중에 점수 구할때 30% 점수 까면됨 ㅇㅇ
+                            break;
+                    }
+                }
+               
                 bool isOk = TurnEvent.DecreaseTurn();
                 Debug.Log("이벤트 활성화 중" + TurnEvent.RemainTurn);
                 if (isOk)
                 {
                     Debug.Log("이벤트 종료");
-                    EventActive = false;
+                    switch (TurnEvent.id)
+                    {
+                        case 1:
+                            //벽 활성화
+                            break;
+                        case 2:
+                            //얼음바닥(힘1.5배) 변수(원래값 1 -> 1.5) 1.5->1
+                            break;
+                        case 3:
+                            //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
+                            break;
+                        case 4:
+                            //소스 범벅 -> UI 비활성화
+                            break;
+                    }
+                            EventActive = false;
                 }
             }
         }
