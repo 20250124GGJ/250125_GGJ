@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Event
 {
@@ -110,6 +111,8 @@ public class GameManager : MonoBehaviour
     private Event   TurnEvent;
     private bool    EventCall = false;
 
+    public GameObject Shake_Detector;
+
     void Start()
     {
         StartCoroutine(ShowTurnNotice());
@@ -145,7 +148,7 @@ public class GameManager : MonoBehaviour
         if(4==TotalBottle)
         {
             Debug.Log("Event 발생");
-            int randvalue = Random.Range(0, 100);
+            int randvalue = Random.Range(30, 48);
 
             Debug.Log(randvalue);
 
@@ -203,6 +206,7 @@ public class GameManager : MonoBehaviour
                             //벽 제거(사이드 벽 비활성화)
                             break;
                         case 2:
+                            Ice_Board();
                             //얼음바닥(힘1.5배)
                             break;
                         case 3:
@@ -230,6 +234,7 @@ public class GameManager : MonoBehaviour
                             CreateWall();
                             break;
                         case 2:
+                            Ice_Board_Cancel();
                             //얼음바닥(힘1.5배) 변수(원래값 1 -> 1.5) 1.5->1
                             break;
                         case 3:
@@ -467,6 +472,16 @@ public class GameManager : MonoBehaviour
             // 생성된 음식을 리스트에 추가
             droppedFoods.Add(foodInstance);
         }
+    }
+
+    public void Ice_Board()
+    {
+        Shake_Detector.GetComponent<ShakeDetector>().ICE = 1.5f;
+    }
+
+    public void Ice_Board_Cancel()
+    {
+        Shake_Detector.GetComponent<ShakeDetector>().ICE = 1.0f;
     }
 
     public void RemoveDroppedFoods()

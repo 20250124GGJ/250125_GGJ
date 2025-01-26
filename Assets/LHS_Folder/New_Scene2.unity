@@ -1561,6 +1561,7 @@ MonoBehaviour:
   ShakeCamera: {fileID: 1506252859}
   Arrow: {fileID: 1355155657}
   Shake: 0
+  ICE: 1
 --- !u!1001 &289688936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12332,6 +12333,7 @@ MonoBehaviour:
   redTeamTurnNotice: {fileID: 266846173}
   ShakeTime_Check: 0
   Angle: 1
+  Shake_Detector: {fileID: 268191714}
 --- !u!4 &2087613214
 Transform:
   m_ObjectHideFlags: 0
