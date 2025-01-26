@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,20 +8,20 @@ public class PlayerController : MonoBehaviour
     {
         Instance = this;
     }
-    public static PlayerController Instance
-    {
-        get;
-        private set;
-    }
+
+    public static PlayerController Instance { get; private set; }
+
     private GameObject Bottle; // 공격할 병 오브젝트
     private GameObject RotateObject; // 회전시킬 오브젝트
 
-
     private Vector2 lastTouchPosition; // 마지막 터치/마우스 위치
     private bool isDragging = false; // 드래그 중인지 확인
+    private float dragThreshold = 10f; // 드래그 이동 거리 기준
+
+    private Rect rotationArea; // 회전 가능한 영역을 정의하는 Rect
 
     public float Throw_Angle = 0;
-    
+
     public void SetBottle(GameObject InBottle)
     {
         Bottle = InBottle;
@@ -33,58 +32,56 @@ public class PlayerController : MonoBehaviour
         RotateObject = InRotateObject;
     }
 
-    // Update is called once per frame
     private void Start()
     {
         GameManager.Instance.SetPlayerController(this);
         GameManager.Instance.NextTurn();
+
+        // 화면 아래 70%를 회전 가능 영역으로 설정
+        rotationArea = new Rect(0, 0, Screen.width, Screen.height * 0.7f);
     }
 
     public void Attack(float pulse)
     {
-            if (Bottle)
-            {
-
-                Bottle.GetComponent<Bottle>().AttackBottle(pulse * 20.0f, Throw_Angle);
-            }
+        if (Bottle)
+        {
+            Bottle.GetComponent<Bottle>().AttackBottle(pulse * 20.0f, Throw_Angle);
+        }
     }
 
     private void Update()
     {
-        // 스페이스바로 병 공격
-        
-
-        // A키로 각도 계산 후 턴 종료
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GameManager.Instance.Angle_Search();
-            GameManager.Instance.NextTurn();
-        }
-
-        // 드래그로 회전 조작 (마우스 또는 터치 입력)
         HandleDragRotation();
     }
 
     private void HandleDragRotation()
     {
-        // 마우스 입력 처리 (에디터 및 PC 테스트용)
         if (Input.GetMouseButtonDown(0))
         {
-            lastTouchPosition = Input.mousePosition;
-            isDragging = true;
+            if (IsWithinRotationArea(Input.mousePosition))
+            {
+                lastTouchPosition = Input.mousePosition;
+                isDragging = true;
+            }
         }
         else if (Input.GetMouseButton(0) && isDragging)
         {
-            Vector2 delta = (Vector2)Input.mousePosition - lastTouchPosition; // 이동 거리 계산
-            RotateBasedOnDrag(delta.x); // 드래그 이동량에 따라 회전
-            lastTouchPosition = Input.mousePosition; // 마지막 위치 업데이트
+            Vector2 delta = (Vector2)Input.mousePosition - lastTouchPosition;
+
+            if (delta.magnitude > dragThreshold)
+            {
+                RotateBasedOnDrag(delta.x);
+                lastTouchPosition = Input.mousePosition;
+            }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            isDragging = false;
-            GameManager.Instance.ShakeTime();
-            Throw_Angle = RotateObject.transform.eulerAngles.y;
-
+            if (isDragging)
+            {
+                isDragging = false;
+                Throw_Angle = RotateObject.transform.eulerAngles.y;
+                GameManager.Instance.ShakeTime();
+            }
         }
 
         // 터치 입력 처리 (모바일)
@@ -94,20 +91,30 @@ public class PlayerController : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
-                lastTouchPosition = touch.position;
-                isDragging = true;
+                if (IsWithinRotationArea(touch.position))
+                {
+                    lastTouchPosition = touch.position;
+                    isDragging = true;
+                }
             }
             else if (touch.phase == TouchPhase.Moved && isDragging)
             {
-                Vector2 delta = touch.position - lastTouchPosition; // 이동 거리 계산
-                RotateBasedOnDrag(delta.x); // 드래그 이동량에 따라 회전
-                lastTouchPosition = touch.position; // 마지막 위치 업데이트
+                Vector2 delta = touch.position - lastTouchPosition;
+
+                if (delta.magnitude > dragThreshold)
+                {
+                    RotateBasedOnDrag(delta.x);
+                    lastTouchPosition = touch.position;
+                }
             }
             else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
             {
-                isDragging = false;
-                GameManager.Instance.ShakeTime();
-                Throw_Angle = RotateObject.transform.eulerAngles.y;
+                if (isDragging)
+                {
+                    isDragging = false;
+                    Throw_Angle = RotateObject.transform.eulerAngles.y;
+                    GameManager.Instance.ShakeTime();
+                }
             }
         }
     }
@@ -116,40 +123,32 @@ public class PlayerController : MonoBehaviour
     {
         if (RotateObject != null)
         {
-            // 회전 속도와 화면 너비로 정규화
-            float rotationSpeed = 1.4f; // 회전 속도
-            float screenWidth = Screen.width; // 화면의 너비
-            float normalizedDeltaX = deltaX / screenWidth; // deltaX를 화면 너비로 나누어 정규화
+            float rotationSpeed = 1.4f;
+            float screenWidth = Screen.width;
+            float normalizedDeltaX = deltaX / screenWidth;
 
-            // 현재 Y축 회전값 가져오기
             float currentYRotation = RotateObject.transform.localEulerAngles.y;
 
-            // 0~360도 범위를 -180~180도로 변환
             if (currentYRotation > 180f)
             {
                 currentYRotation -= 360f;
             }
 
-            // 드래그 이동량에 따라 회전값 계산
             currentYRotation += normalizedDeltaX * rotationSpeed * 360f;
 
-            // Y축 회전 값 제한 (-60도 ~ 60도)
             currentYRotation = Mathf.Clamp(currentYRotation, -60f, 60f);
 
-            // 변경된 회전값을 다시 0~360도 범위로 변환 후 적용
             if (currentYRotation < 0f)
             {
                 currentYRotation += 360f;
             }
 
-            // RotateObject의 회전값 적용
             RotateObject.transform.localEulerAngles = new Vector3(
                 RotateObject.transform.localEulerAngles.x,
                 currentYRotation,
                 RotateObject.transform.localEulerAngles.z
             );
 
-            // Bottle이 null이 아닌 경우 RotateObject와 동일한 회전값 적용
             if (Bottle != null)
             {
                 Bottle.transform.localEulerAngles = new Vector3(
@@ -161,6 +160,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
+    private bool IsWithinRotationArea(Vector2 position)
+    {
+        return rotationArea.Contains(position);
+    }
 }
