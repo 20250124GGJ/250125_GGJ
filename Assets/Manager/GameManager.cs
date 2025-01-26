@@ -19,6 +19,8 @@ public class Event
         this.RemainTurn = remainTurn;
     }
 
+
+
     public void SetEvent(int id)
     {
         switch (id)
