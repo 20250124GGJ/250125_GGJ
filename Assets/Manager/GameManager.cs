@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
 
     public Score scoreCalculator;
     public GameObject Arrow;
+    public GameObject leftWall;
+    public GameObject rightWall;
 
     //결과 화면 패널
     public TextMeshProUGUI redPlayerScoreText;  
@@ -195,6 +197,7 @@ public class GameManager : MonoBehaviour
                     switch(TurnEvent.id)
                     {
                         case 1:
+                            RemoveWall();
                             //벽 제거(사이드 벽 비활성화)
                             break;
                         case 2:
@@ -222,6 +225,7 @@ public class GameManager : MonoBehaviour
                     {
                         case 1:
                             //벽 활성화
+                            CreateWall();
                             break;
                         case 2:
                             //얼음바닥(힘1.5배) 변수(원래값 1 -> 1.5) 1.5->1
@@ -473,5 +477,17 @@ public class GameManager : MonoBehaviour
 
         // 리스트 비우기
         droppedFoods.Clear();
+    }
+
+    public void RemoveWall()
+    {
+        leftWall.gameObject.SetActive(false);
+        rightWall.gameObject.SetActive(false);
+    }
+
+    public void CreateWall()
+    {
+        leftWall.gameObject.SetActive(true);
+        rightWall.gameObject.SetActive(true);
     }
 }

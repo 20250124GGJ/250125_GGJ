@@ -3378,7 +3378,7 @@ GameObject:
   - component: {fileID: 1006962890}
   - component: {fileID: 1006962894}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: leftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9463,7 +9463,7 @@ GameObject:
   - component: {fileID: 1376782846}
   - component: {fileID: 1376782850}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: rightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11935,6 +11935,8 @@ MonoBehaviour:
   - {fileID: 808926888670364773, guid: 36af4939a17a06248b04e6ef4e28c3c6, type: 3}
   scoreCalculator: {fileID: 789130374}
   Arrow: {fileID: 1355155657}
+  leftWall: {fileID: 1006962889}
+  rightWall: {fileID: 1376782845}
   redPlayerScoreText: {fileID: 225838422}
   bluePlayerScoreText: {fileID: 1716837883}
   redTeamWinImage: {fileID: 528155762}
