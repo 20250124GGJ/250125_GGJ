@@ -77,11 +77,11 @@ public class GameManager : MonoBehaviour
     private int currentturn = 2;
 
     //플레이어의 점수 1 - Red, 2 - Blue
-    private int redplayerscore  = 0;
-    private int blueplayerscore = 0;
+    private float redplayerscore  = 0;
+    private float blueplayerscore = 0;
 
-    public int GetRedPlayerScore    => redplayerscore;
-    public int GetBluePlayerScore   => blueplayerscore;
+    public float GetRedPlayerScore    => redplayerscore;
+    public float GetBluePlayerScore   => blueplayerscore;
 
     public GameObject[] BottlePrefabs;
     public GameObject[] foodPrefabs;
@@ -120,6 +120,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject Shake_Detector;
 
+    public GameObject Source;
+
+    private bool isScoreDown = false;
     void Start()
     {
         StartCoroutine(ShowTurnNotice());
@@ -155,7 +158,7 @@ public class GameManager : MonoBehaviour
         if(4==TotalBottle)
         {
             Debug.Log("Event 발생");
-            int randvalue = Random.Range(30, 48);
+            int randvalue = Random.Range(0, 100);
 
             Debug.Log(randvalue);
 
@@ -227,9 +230,11 @@ public class GameManager : MonoBehaviour
                             break;
                         case 4:
                             //소스 범벅 -> UI 활성화
+                            Source.SetActive(true);
                             break;
                         case 5:
                             //접시 축소 -> 변수하나 만들어서 나중에 점수 구할때 30% 점수 까면됨 ㅇㅇ
+                            isScoreDown = true;
                             break;
                     }
                 }
@@ -255,9 +260,10 @@ public class GameManager : MonoBehaviour
                             break;
                         case 4:
                             //소스 범벅 -> UI 비활성화
+                            Source.SetActive(false);
                             break;
                     }
-                            EventActive = false;
+                    EventActive = false;
                 }
             }
         }
@@ -388,6 +394,11 @@ public class GameManager : MonoBehaviour
         // UI 표시
         Debug.Log("bluePlayerScore : "+ blueplayerscore);
         Debug.Log("redPlayerScore : "+ redplayerscore);
+        if(isScoreDown)
+        {
+            blueplayerscore = blueplayerscore * 0.7f;
+            redplayerscore = redplayerscore * 0.7f;
+        }
 
         StartCoroutine(ShowResult());
     }
