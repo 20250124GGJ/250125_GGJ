@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
     public int GetBluePlayerScore   => blueplayerscore;
 
     public GameObject[] BottlePrefabs;
+    public GameObject[] foodPrefabs;
 
     public Score scoreCalculator;
     public GameObject Arrow;
@@ -394,5 +395,31 @@ public class GameManager : MonoBehaviour
         }
 
         activeNotice.gameObject.SetActive(false);  // FadeOut 후 이미지 비활성화
+    }
+
+    IEnumerator FoodDropEvent()
+    {
+        // 음식 4개를 생성
+        for (int i = 0; i < 4; i++)
+        {
+            // 랜덤 위치 계산
+            float randomX = Random.Range(-1f, 1f);  // x축 -1 ~ 1 범위
+            float randomY = 3f;  // y축 고정값 3
+            float randomZ = Random.Range(2f, 5f);  // z축 2 ~ 5 범위
+
+            Vector3 spawnPosition = new Vector3(randomX, randomY, randomZ);
+
+            // 4개 음식 프리팹 중에서 랜덤으로 선택
+            int randomFoodIndex = Random.Range(0, foodPrefabs.Length);  // 0 ~ 3 인덱스 선택
+            GameObject selectedFoodPrefab = foodPrefabs[randomFoodIndex];
+
+            // 랜덤으로 선택된 음식 프리팹을 해당 위치에 생성
+            Instantiate(selectedFoodPrefab, spawnPosition, Quaternion.identity);
+
+            // 음식이 떨어지는 간격을 두기 위해 0.5초 대기
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        yield return null;
     }
 }
