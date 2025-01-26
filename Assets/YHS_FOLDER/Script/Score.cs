@@ -57,8 +57,8 @@ public class Score : MonoBehaviour
                     
                 }
             }
-            //bottle.SetActive(false);
-            Destroy(bottle);
+            //bottle.SetActive(false);    
+            //Destroy(bottle);
         }
         
     }

@@ -21,7 +21,7 @@ public class Bottle : MonoBehaviour
         Vector3 fwd = -transform.up;  // 회전된 후의 방향
 
         fwd.Normalize();
-        Debug.Log(fwd);
+        //Debug.Log(fwd);
 
         // 힘을 적용하여 병을 날리기
         rb.AddForce(fwd * InPower, ForceMode.Impulse);
