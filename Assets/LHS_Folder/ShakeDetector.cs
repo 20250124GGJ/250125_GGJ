@@ -30,6 +30,8 @@ public class ShakeDetector : MonoBehaviour
 
     private bool reset = true;
 
+    public float ICE = 1.0f;
+
     private void Awake()
     {
         soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
@@ -104,7 +106,7 @@ public class ShakeDetector : MonoBehaviour
         {
             
             Handheld.Vibrate();
-            Energy.GetComponent<Slider>().value = Energy.GetComponent<Slider>().value + 0.03f;
+            Energy.GetComponent<Slider>().value = (Energy.GetComponent<Slider>().value + 0.03f) * ICE;
             soundManager.PlaySFX(soundManager.shakeSound);
             StartCoroutine(ShakeBottleY());
         }

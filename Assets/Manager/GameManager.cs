@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Event
 {
@@ -18,6 +19,8 @@ public class Event
         this.id = id;
         this.RemainTurn = remainTurn;
     }
+
+
 
     public void SetEvent(int id)
     {
@@ -64,6 +67,7 @@ public class GameManager : MonoBehaviour
         private set;
     }
 
+    private List<GameObject> droppedFoods = new List<GameObject>();
     private int TotalBottle = 0;
     //Player Controller
     private PlayerController playerController;
@@ -80,9 +84,12 @@ public class GameManager : MonoBehaviour
     public int GetBluePlayerScore   => blueplayerscore;
 
     public GameObject[] BottlePrefabs;
+    public GameObject[] foodPrefabs;
 
     public Score scoreCalculator;
     public GameObject Arrow;
+    public GameObject leftWall;
+    public GameObject rightWall;
 
     //결과 화면 패널
     public TextMeshProUGUI redPlayerScoreText;  
@@ -96,6 +103,13 @@ public class GameManager : MonoBehaviour
     public Image blueTeamTurnNotice;
     public Image redTeamTurnNotice;
 
+    //이벤트 고지 패널
+    public Image wallBreak;
+    public Image iceBoard;
+    public Image foodDrop;
+    public Image sauceShower;
+    public Image aimSmall;
+
     public bool ShakeTime_Check = false;
 
     public bool Angle = false;
@@ -103,6 +117,8 @@ public class GameManager : MonoBehaviour
     private bool    EventActive = false;
     private Event   TurnEvent;
     private bool    EventCall = false;
+
+    public GameObject Shake_Detector;
 
     void Start()
     {
@@ -139,7 +155,7 @@ public class GameManager : MonoBehaviour
         if(4==TotalBottle)
         {
             Debug.Log("Event 발생");
-            int randvalue = Random.Range(0, 100);
+            int randvalue = Random.Range(30, 48);
 
             Debug.Log(randvalue);
 
@@ -147,30 +163,35 @@ public class GameManager : MonoBehaviour
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(5);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if(randvalue > 64)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(4);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if (randvalue > 49)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(3);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if (randvalue > 29)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(2);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
             else if (randvalue > 9)
             {
                 TurnEvent = new Event();
                 TurnEvent.SetEvent(1);
+                StartCoroutine(EventPanelShow());
                 EventActive = true;
             }
         }
@@ -193,12 +214,15 @@ public class GameManager : MonoBehaviour
                     switch(TurnEvent.id)
                     {
                         case 1:
+                            RemoveWall();
                             //벽 제거(사이드 벽 비활성화)
                             break;
                         case 2:
+                            Ice_Board();
                             //얼음바닥(힘1.5배)
                             break;
                         case 3:
+                            FoodDropEvent();
                             //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
                             break;
                         case 4:
@@ -219,11 +243,14 @@ public class GameManager : MonoBehaviour
                     {
                         case 1:
                             //벽 활성화
+                            CreateWall();
                             break;
                         case 2:
+                            Ice_Board_Cancel();
                             //얼음바닥(힘1.5배) 변수(원래값 1 -> 1.5) 1.5->1
                             break;
                         case 3:
+                            RemoveDroppedFoods();
                             //음식 폭포(범위나 대충 그냥 음식 오브젝트 설치) -> GameObject 배열로 가지고있다가 턴 지나면 foreach로 제거
                             break;
                         case 4:
@@ -404,8 +431,18 @@ public class GameManager : MonoBehaviour
         // 각 팀의 턴을 표시하는 이미지 활성화
         if (currentturn == 1)
         {
-            redTeamTurnNotice.gameObject.SetActive(false);
-            blueTeamTurnNotice.gameObject.SetActive(true);
+            if(EventCall)
+            {
+                yield return new WaitForSeconds(2f);
+                redTeamTurnNotice.gameObject.SetActive(false);
+                blueTeamTurnNotice.gameObject.SetActive(true);
+            }
+            else
+            {
+                redTeamTurnNotice.gameObject.SetActive(false);
+                blueTeamTurnNotice.gameObject.SetActive(true);
+            }
+            
         }
         else
         {
@@ -417,6 +454,53 @@ public class GameManager : MonoBehaviour
   
 
         yield return null;
+    }
+
+    IEnumerator EventPanelShow()
+    {
+        if(TurnEvent.id==1)
+        {
+            wallBreak.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 2)
+        {
+            iceBoard.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 3)
+        {
+            foodDrop.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 4)
+        {
+            sauceShower.gameObject.SetActive(true);
+        }
+        else if (TurnEvent.id == 5)
+        {
+            aimSmall.gameObject.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        if (TurnEvent.id == 1)
+        {
+            wallBreak.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 2)
+        {
+            iceBoard.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 3)
+        {
+            foodDrop.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 4)
+        {
+            sauceShower.gameObject.SetActive(false);
+        }
+        else if (TurnEvent.id == 5)
+        {
+            aimSmall.gameObject.SetActive(false);
+        }
     }
 
     IEnumerator FadeOut()
@@ -433,5 +517,63 @@ public class GameManager : MonoBehaviour
         }
 
         activeNotice.gameObject.SetActive(false);  // FadeOut 후 이미지 비활성화
+    }
+
+    public void FoodDropEvent()
+    {
+        // 음식 4개를 생성
+        for (int i = 0; i < 4; i++)
+        {
+            // 랜덤 위치 계산
+            float randomX = Random.Range(-1f, 1f);  // x축 -1 ~ 1 범위
+            float randomY = 3f;  // y축 고정값 3
+            float randomZ = Random.Range(2f, 5f);  // z축 2 ~ 5 범위
+
+            Vector3 spawnPosition = new Vector3(randomX, randomY, randomZ);
+
+            // 4개 음식 프리팹 중에서 랜덤으로 선택
+            int randomFoodIndex = Random.Range(0, foodPrefabs.Length);  // 0 ~ 3 인덱스 선택
+            GameObject selectedFoodPrefab = foodPrefabs[randomFoodIndex];
+
+            // 랜덤으로 선택된 음식 프리팹을 해당 위치에 생성
+            GameObject foodInstance = Instantiate(selectedFoodPrefab, spawnPosition, Quaternion.identity);
+
+            // 생성된 음식을 리스트에 추가
+            droppedFoods.Add(foodInstance);
+        }
+    }
+
+    public void Ice_Board()
+    {
+        Shake_Detector.GetComponent<ShakeDetector>().ICE = 1.5f;
+    }
+
+    public void Ice_Board_Cancel()
+    {
+        Shake_Detector.GetComponent<ShakeDetector>().ICE = 1.0f;
+    }
+
+    public void RemoveDroppedFoods()
+    {
+        // 리스트에 있는 음식들을 삭제
+        foreach (GameObject food in droppedFoods)
+        {
+            Destroy(food);  // 음식 오브젝트 삭제
+        }
+
+        // 리스트 비우기
+        droppedFoods.Clear();
+    }
+
+    public void RemoveWall()
+    {
+        leftWall.gameObject.SetActive(false);
+        rightWall.gameObject.SetActive(false);
+    }
+
+    public void CreateWall()
+    {
+        leftWall.gameObject.SetActive(true);
+        rightWall.gameObject.SetActive(true);
     }
 }
